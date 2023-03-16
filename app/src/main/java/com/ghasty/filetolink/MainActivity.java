@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
         uploadBtn.setOnClickListener(v -> {
             toggleProgressVisibility(true);
-            preview.setVisibility(View.INVISIBLE);g
+            preview.setVisibility(View.INVISIBLE);
             try {
                 uploadImage();
             } catch (JSONException e) {

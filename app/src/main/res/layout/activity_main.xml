@@ -11,6 +11,7 @@
     <include layout="@layout/header" android:id="@+id/header" />
 
     <LinearLayout
+        android:id="@+id/first_linear"
         android:layout_width="match_parent"
         android:layout_height="350dp"
         android:orientation="vertical"
@@ -101,6 +102,32 @@
             android:drawableLeft="@drawable/baseline_arrow_circle_up_24"
             app:cornerRadius="8dp"
             android:visibility="invisible"
+        />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/first_linear"
+        android:layout_marginTop="30dp">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Paste image id"
+            android:layout_marginHorizontal="5dp"
+        />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/view_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/upload_bg"
+            android:layout_marginHorizontal="5dp"
+            android:text="View"
         />
 
     </LinearLayout>
