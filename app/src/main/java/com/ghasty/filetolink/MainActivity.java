@@ -13,16 +13,22 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.button.MaterialButton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,8 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar uploadProgressBar;
     private RequestQueue requestQueue;
     private Uri imageUri;
-    private String image;
-    private long url;
+
     private String uploadUrl;
 
     @Override
@@ -47,9 +52,7 @@ public class MainActivity extends AppCompatActivity {
         link = findViewById(R.id.link_view);
         choose = findViewById(R.id.choose);
 
-
-        image = covertToBase64(imageUri);
-        url = System.currentTimeMillis();
+        requestQueue = Volley.newRequestQueue(this);
 
         choose.setOnClickListener(v -> chooseImage());
 
@@ -57,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 uploadImage();
             } catch (JSONException e) {
-                Log.d("Ghasty", e.getLocalizedMessage());
+                throw new RuntimeException(e);
             }
         });
     }
@@ -77,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
             imageUri = data.getData();
             preview.setImageURI(imageUri);
             uploadBtn.setVisibility(View.VISIBLE);
-            Log.d("Ghastyy", covertToBase64(imageUri));
         }
     }
 
@@ -100,16 +102,31 @@ public class MainActivity extends AppCompatActivity {
 
     private void uploadImage() throws JSONException {
         String url = "https://file-to-link-e6pc.onrender.com/api/image";
+        Log.d("Ghastyy", "starting..");
+
 
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("image", image);
-        jsonObject.put("url", url);
+        jsonObject.put("image", covertToBase64(imageUri));
+        jsonObject.put("urlId", System.currentTimeMillis());
+
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, jsonObject, response -> {
             Log.d("Ghastyy", response.toString());
+            if (!response.equals(null) ) {
+                Log.d("Ghastyy", "bye pro");
+            }
         }, error -> {
             error.printStackTrace();
-        });
+        }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<>();
+                params.put("Content-Type", "application/json");
+
+                return params;
+            }
+        };
+
 
         requestQueue.add(request);
     }
