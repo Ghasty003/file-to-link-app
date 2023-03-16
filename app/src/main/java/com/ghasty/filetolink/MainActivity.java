@@ -3,6 +3,9 @@ package com.ghasty.filetolink;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -13,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -34,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     private MaterialButton uploadBtn;
     private ImageView preview;
+    private TextView uploadLink;
     private View link, choose;
     private ProgressBar uploadProgressBar;
     private RequestQueue requestQueue;
@@ -51,20 +56,32 @@ public class MainActivity extends AppCompatActivity {
         preview = findViewById(R.id.preview);
         link = findViewById(R.id.link_view);
         choose = findViewById(R.id.choose);
+        uploadLink = findViewById(R.id.upload_link);
+
+        uploadUrl = String.valueOf(System.currentTimeMillis());
 
         requestQueue = Volley.newRequestQueue(this);
 
         choose.setOnClickListener(v -> chooseImage());
 
+        uploadLink.setOnClickListener(v -> copyToClipBoard());
+
         uploadBtn.setOnClickListener(v -> {
             toggleProgressVisibility(true);
-            preview.setVisibility(View.INVISIBLE);
+            preview.setVisibility(View.INVISIBLE);g
             try {
                 uploadImage();
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
         });
+    }
+
+    private void copyToClipBoard() {
+        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clipData = ClipData.newPlainText("Copied", uploadUrl);
+        clipboardManager.setPrimaryClip(clipData);
+        Toast.makeText(this, "Text copied!", Toast.LENGTH_SHORT).show();
     }
 
     private void chooseImage() {
@@ -81,7 +98,9 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
             imageUri = data.getData();
             preview.setImageURI(imageUri);
+            preview.setVisibility(View.VISIBLE);
             uploadBtn.setVisibility(View.VISIBLE);
+            link.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -109,15 +128,17 @@ public class MainActivity extends AppCompatActivity {
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("image", covertToBase64(imageUri));
-        jsonObject.put("urlId", System.currentTimeMillis());
+        jsonObject.put("urlId", uploadUrl);
 
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, jsonObject, response -> {
             Log.d("Ghastyy", response.toString());
             if (!response.equals(null) ) {
                 toggleProgressVisibility(false);
-                uploadBtn.setVisibility(View.GONE);
+                uploadBtn.setVisibility(View.INVISIBLE);
                 link.setVisibility(View.VISIBLE);
+                uploadLink.setText(uploadUrl);
+                uploadUrl = String.valueOf(System.currentTimeMillis());
                 Log.d("Ghastyy", "bye pro");
             }
         }, error -> {
