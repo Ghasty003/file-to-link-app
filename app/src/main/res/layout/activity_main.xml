@@ -12,9 +12,13 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:orientation="vertical"
-        android:layout_below="@id/header">
+        android:layout_below="@id/header"
+        android:background="@drawable/file_bg"
+        android:layout_marginHorizontal="30dp"
+        android:paddingVertical="10dp"
+        android:layout_marginTop="50dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -35,9 +39,66 @@
                 android:layout_height="wrap_content"
                 android:text="Choose Image"
                 android:textSize="25sp"
+                android:textColor="@color/white"
                 />
 
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/preview"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+        />
+
+        <ProgressBar
+            android:id="@+id/upload_progressbar"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+        />
+
+        <LinearLayout
+            android:id="@+id/link_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Your upload link: "
+                android:textSize="20sp"
+                android:layout_marginVertical="5dp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="https://link.vercel.app"
+                android:textSize="18sp"
+                android:layout_marginVertical="5dp"
+                />
+
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/upload_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/upload_bg"
+            android:text="Upload"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginVertical="10dp"
+            android:drawableLeft="@drawable/baseline_arrow_circle_up_24"
+            app:cornerRadius="8dp"
+            android:visibility="gone"
+        />
 
     </LinearLayout>
 
