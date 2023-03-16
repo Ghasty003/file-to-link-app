@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
         choose.setOnClickListener(v -> chooseImage());
 
         uploadBtn.setOnClickListener(v -> {
+            toggleProgressVisibility(true);
+            preview.setVisibility(View.INVISIBLE);
             try {
                 uploadImage();
             } catch (JSONException e) {
@@ -113,6 +115,9 @@ public class MainActivity extends AppCompatActivity {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, jsonObject, response -> {
             Log.d("Ghastyy", response.toString());
             if (!response.equals(null) ) {
+                toggleProgressVisibility(false);
+                uploadBtn.setVisibility(View.GONE);
+                link.setVisibility(View.VISIBLE);
                 Log.d("Ghastyy", "bye pro");
             }
         }, error -> {
@@ -129,5 +134,14 @@ public class MainActivity extends AppCompatActivity {
 
 
         requestQueue.add(request);
+    }
+
+    private void toggleProgressVisibility(boolean show) {
+        if (show) {
+            uploadProgressBar.setVisibility(View.VISIBLE);
+            return;
+        }
+
+        uploadProgressBar.setVisibility(View.INVISIBLE);
     }
 }

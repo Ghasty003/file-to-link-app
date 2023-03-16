@@ -12,7 +12,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="270dp"
         android:orientation="vertical"
         android:layout_below="@id/header"
         android:background="@drawable/file_bg"
@@ -51,6 +51,8 @@
             android:layout_height="100dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
+            android:src="@drawable/file"
+            android:visibility="invisible"
         />
 
         <ProgressBar
@@ -98,7 +100,7 @@
             android:layout_marginVertical="10dp"
             android:drawableLeft="@drawable/baseline_arrow_circle_up_24"
             app:cornerRadius="8dp"
-            android:visibility="gone"
+            android:visibility="invisible"
         />
 
     </LinearLayout>
