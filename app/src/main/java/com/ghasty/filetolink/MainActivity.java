@@ -36,7 +36,7 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    private MaterialButton uploadBtn;
+    private MaterialButton uploadBtn, viewImage;
     private ImageView preview;
     private TextView uploadLink;
     private View link, choose;
@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         link = findViewById(R.id.link_view);
         choose = findViewById(R.id.choose);
         uploadLink = findViewById(R.id.upload_link);
+        viewImage = findViewById(R.id.view_image);
 
         uploadUrl = String.valueOf(System.currentTimeMillis());
 
@@ -74,6 +75,12 @@ public class MainActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
+        });
+
+        viewImage.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, ShowImageActivity.class);
+            intent.putExtra("imageId", uploadUrl);
+            startActivity(intent);
         });
     }
 
